@@ -59,7 +59,7 @@
       "guest_os_type": "Solaris11_64",
       "iso_checksum": "1d0efbffe1b194959c1a3d3c8b8d801411c54278",
       "iso_checksum_type": "sha1",
-      "iso_url": "/Users/edwin/Downloads/sol-11_1-text-x86.iso",
+      "iso_url": "/ISO/Solaris/sol-11_1-text-x86.iso",
       "output_directory": "packer-solaris11-virtualbox",
       "shutdown_command": "echo '/usr/sbin/poweroff' > shutdown.sh; pfexec bash -l shutdown.sh",
       "ssh_password": "1vagrant",

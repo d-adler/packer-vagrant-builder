@@ -39,7 +39,7 @@
       "guest_os_type": "Solaris_64",
       "iso_checksum": "c27e5fe2531826192f110e2d9f1f5d73015edac6",
       "iso_checksum_type": "sha1",
-      "iso_url": "/Users/edwin/Downloads/sol-10-u11-ga-x86-dvd.iso",
+      "iso_url": "/ISO/Solaris/sol-10-u11-ga-x86-dvd.iso",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_port": 22,
