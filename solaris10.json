@@ -10,7 +10,6 @@
       "type": "shell",
       "scripts": [
         "scripts/solaris/postinstall.sh",
-        "scripts/solaris/puppet.sh",
         "scripts/solaris/update-terminfo.sh",
         "scripts/solaris/cleanup.sh"
       ]

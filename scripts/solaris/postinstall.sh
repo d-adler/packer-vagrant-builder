@@ -35,7 +35,7 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 
 
 ## Ruby
-/opt/csw/bin/pkgutil -y -i CSWgsed
+#/opt/csw/bin/pkgutil -y -i CSWgsed
 # /opt/csw/bin/pkgutil -y -i CSWruby18-gcc4 CSWruby18-dev CSWruby18
 # /opt/csw/bin/pkgutil -y -i CSWrubygems
 
