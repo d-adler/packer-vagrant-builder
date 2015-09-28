@@ -3,6 +3,9 @@
 ## Tag version
 date > /etc/vagrant_box_build_time
 
+## increase swap
+# zfs set volsize=6g rpool/swap
+
 ## Add the opencsw package site
 PATH=/usr/bin:/usr/sbin:$PATH
 export PATH
@@ -15,24 +18,24 @@ yes|/usr/sbin/pkgadd -d http://mirror.opencsw.org/opencsw/pkgutil-`uname -p`.pkg
 
 
 # get 'sudo'
-/opt/csw/bin/pkgutil -y -i CSWsudo
-chgrp 0 /etc/opt/csw/sudoers
-ln -s /etc/opt/csw/sudoers /etc/sudoers
+# /opt/csw/bin/pkgutil -y -i CSWsudo
+# chgrp 0 /etc/opt/csw/sudoers
+# ln -s /etc/opt/csw/sudoers /etc/sudoers
 # get 'wget', 'GNU tar' and 'GNU sed' (also needed for Ruby)
 /opt/csw/bin/pkgutil -y -i CSWwget CSWgtar CSWgsed CSWvim
 
 
 ## Ruby
 /opt/csw/bin/pkgutil -y -i CSWgsed
-/opt/csw/bin/pkgutil -y -i CSWruby18-gcc4 CSWruby18-dev CSWruby18
-/opt/csw/bin/pkgutil -y -i CSWrubygems
+# /opt/csw/bin/pkgutil -y -i CSWruby18-gcc4 CSWruby18-dev CSWruby18
+# /opt/csw/bin/pkgutil -y -i CSWrubygems
 
 # puppet
-/opt/csw/bin/pkgutil -y -i CSWaugeas
-/opt/csw/bin/pkgutil -y -i CSWrubyaugeas
+# /opt/csw/bin/pkgutil -y -i CSWaugeas
+# /opt/csw/bin/pkgutil -y -i CSWrubyaugeas
 
-/opt/csw/bin/gem install puppet  --no-ri --no-rdoc
-
+# /opt/csw/bin/gem install puppet -v 3.8.1 --no-ri --no-rdoc
+/opt/csw/bin/pkgutil -y -i CSWpuppet3
 
 mkdir -p /etc/puppet
 mkdir -p /etc/puppet/modules
@@ -74,21 +77,33 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 ## Add the CSW libraries to the LD path
 /usr/bin/crle -u -l /opt/csw/lib
 
-## Installing the virtualbox guest additions (from the ISO)
-#
-echo "Installing VirtualBox Guest Additions"
-echo "mail=\ninstance=overwrite\npartial=quit" > /tmp/noask.admin
-echo "runlevel=nocheck\nidepend=quit\nrdepend=quit" >> /tmp/noask.admin
-echo "space=quit\nsetuid=nocheck\nconflict=nocheck" >> /tmp/noask.admin
-echo "action=nocheck\nbasedir=default" >> /tmp/noask.admin
-DEV=`/usr/sbin/lofiadm -a /export/home/vagrant/VBoxGuestAdditions.iso`
-/usr/sbin/mount -o ro -F hsfs $DEV /mnt
-/usr/sbin/pkgadd -a /tmp/noask.admin -G -d /mnt/VBoxSolarisAdditions.pkg all
-/usr/sbin/umount /mnt
-/usr/sbin/lofiadm -d $DEV
-rm -f VBoxGuestAdditions.iso
 
+if [ $PACKER_BUILDER_TYPE = 'virtualbox-iso' ]; then
+  echo "Installing VirtualBox Guest Additions"
+  echo "mail=\ninstance=overwrite\npartial=quit" > /tmp/noask.admin
+  echo "runlevel=nocheck\nidepend=quit\nrdepend=quit" >> /tmp/noask.admin
+  echo "space=quit\nsetuid=nocheck\nconflict=nocheck" >> /tmp/noask.admin
+  echo "action=nocheck\nbasedir=default" >> /tmp/noask.admin
+  DEV=`/usr/sbin/lofiadm -a /export/home/vagrant/VBoxGuestAdditions.iso`
+  /usr/sbin/mount -o ro -F hsfs $DEV /mnt
+  /usr/sbin/pkgadd -a /tmp/noask.admin -G -d /mnt/VBoxSolarisAdditions.pkg all
+  /usr/sbin/umount /mnt
+  /usr/sbin/lofiadm -d $DEV
+  rm -f VBoxGuestAdditions.iso
+fi
 
+if [ $PACKER_BUILDER_TYPE = 'vmware-iso' ]; then
+  DEV=`/usr/sbin/lofiadm -a /export/home/vagrant/solaris.iso`
+  mkdir /mnt2
+  /usr/sbin/mount -o ro -F hsfs $DEV /mnt2
+  mkdir /tmp/vmfusion-archive
+  gunzip -c /mnt2/vmware-solaris-tools.tar.gz | (cd /tmp/vmfusion-archive ; tar xvf -)
+  /tmp/vmfusion-archive/vmware-tools-distrib/vmware-install.pl --default
+  /usr/sbin/umount /mnt2
+  /usr/sbin/lofiadm -d $DEV
+  rm -rf /tmp/vmfusion-archive
+  rm -f solaris.iso
+fi
 
 
 ## Add loghost to /etc/hosts

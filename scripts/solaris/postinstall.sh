@@ -22,8 +22,6 @@ ln -s /etc/opt/csw/sudoers /etc/sudoers
 # Add 'vagrant' to sudoers as well
 test -f /etc/sudoers && grep -v "vagrant" "/etc/sudoers" 1>/dev/null 2>&1 && echo "vagrant ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-
-
 # Installing vagrant keys
 mkdir ${HOME}/.ssh
 chmod 700 ${HOME}/.ssh
@@ -38,8 +36,8 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 
 ## Ruby
 /opt/csw/bin/pkgutil -y -i CSWgsed
-/opt/csw/bin/pkgutil -y -i CSWruby18-gcc4 CSWruby18-dev CSWruby18
-/opt/csw/bin/pkgutil -y -i CSWrubygems
+# /opt/csw/bin/pkgutil -y -i CSWruby18-gcc4 CSWruby18-dev CSWruby18
+# /opt/csw/bin/pkgutil -y -i CSWrubygems
 
 
 #/opt/csw/bin/pkgutil -y -i CSWreadline
@@ -48,7 +46,7 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 #
 ## no solaris2.11 .... mkheaders here ! needs some fixing ??
 ## /opt/csw/gcc4/libexec/gcc/i386-pc-solaris2.10/4.3.3/install-tools/mkheaders
-#/opt/csw/gcc4/libexec/gcc/i386-pc-solaris2.8/4.3.3/install-tools/mkheaders 
+#/opt/csw/gcc4/libexec/gcc/i386-pc-solaris2.8/4.3.3/install-tools/mkheaders
 #
 #/opt/csw/sbin/alternatives --display rbconfig18
 #/opt/csw/sbin/alternatives --set rbconfig18 /opt/csw/lib/ruby/1.8/i386-solaris2.9/rbconfig.rb.gcc4
@@ -67,18 +65,45 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 
 
 
-## Installing the virtualbox guest additions (from the ISO)
-#
-VBOX_VERSION=`cat $HOME/.vbox_version`
-cd /tmp
-mkdir vboxguestmnt
-mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
-cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
-/usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
-yes|/usr/sbin/pkgadd -d . SUNWvboxguest
+# ## Installing the virtualbox guest additions (from the ISO)
+# #
+# VBOX_VERSION=`cat $HOME/.vbox_version`
+# cd /tmp
+# mkdir vboxguestmnt
+# mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
+# cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
+# /usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
+# yes|/usr/sbin/pkgadd -d . SUNWvboxguest
 
-umount /tmp/vboxguestmnt
-lofiadm -d /dev/lofi/1
+# umount /tmp/vboxguestmnt
+# lofiadm -d /dev/lofi/1
+
+if [ $PACKER_BUILDER_TYPE = 'virtualbox-iso' ]; then
+  echo "Installing VirtualBox Guest Additions"
+  echo "mail=\ninstance=overwrite\npartial=quit" > /tmp/noask.admin
+  echo "runlevel=nocheck\nidepend=quit\nrdepend=quit" >> /tmp/noask.admin
+  echo "space=quit\nsetuid=nocheck\nconflict=nocheck" >> /tmp/noask.admin
+  echo "action=nocheck\nbasedir=default" >> /tmp/noask.admin
+  DEV=`/usr/sbin/lofiadm -a /export/home/vagrant/VBoxGuestAdditions.iso`
+  /usr/sbin/mount -o ro -F hsfs $DEV /mnt
+  /usr/sbin/pkgadd -a /tmp/noask.admin -G -d /mnt/VBoxSolarisAdditions.pkg all
+  /usr/sbin/umount /mnt
+  /usr/sbin/lofiadm -d $DEV
+  rm -f VBoxGuestAdditions.iso
+fi
+
+if [ $PACKER_BUILDER_TYPE = 'vmware-iso' ]; then
+  DEV=`/usr/sbin/lofiadm -a /export/home/vagrant/solaris.iso`
+  mkdir /mnt2
+  /usr/sbin/mount -o ro -F hsfs $DEV /mnt2
+  mkdir /tmp/vmfusion-archive
+  gunzip -c /mnt2/vmware-solaris-tools.tar.gz | (cd /tmp/vmfusion-archive ; tar xvf -)
+  /tmp/vmfusion-archive/vmware-tools-distrib/vmware-install.pl --default
+  /usr/sbin/umount /mnt2
+  /usr/sbin/lofiadm -d $DEV
+  rm -rf /tmp/vmfusion-archive
+  rm -f solaris.iso
+fi
 
 
 

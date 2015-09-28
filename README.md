@@ -18,7 +18,7 @@ make sure you create folder called build in this repos
 
 Download packer at http://packer.io, tested it with Packer 0.7.5
 
-export PATH=~/packer_0.7.5_darwin_amd64:$PATH
+export PATH=~/packer_0.8.1_darwin_amd64:$PATH
 
 * packer build centos-5.8-x86_64.json
 * packer build centos-5.10-x86_64.json
@@ -34,10 +34,14 @@ export PATH=~/packer_0.7.5_darwin_amd64:$PATH
 * packer build fedora-20-x86_64.json
 * packer build ubuntu-12.04-amd64.json
 
-* packer build solaris10.json
-* packer build solaris11.json
-* packer build solaris11_2.json
+* packer build -only=virtualbox-iso solaris10.json
+* packer build -only=vmware-iso solaris10.json
 
+* packer build solaris11.json
+* packer build -only=virtualbox-iso solaris11_2.json
+* packer build -only=vmware-iso solaris11_2.json
+
+* packer build oracle-linux-5.8-x86_64.json
 * packer build oracle-linux-6.5-x86_64.json
 * packer build oracle-linux-6.6-x86_64.json
 * packer build -only=virtualbox-iso oracle-linux-6.6-x86_64.json
