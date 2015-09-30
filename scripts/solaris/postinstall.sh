@@ -18,6 +18,7 @@ chgrp 0 /etc/opt/csw/sudoers
 ln -s /etc/opt/csw/sudoers /etc/sudoers
 # get 'wget', 'GNU tar' and 'GNU sed' (also needed for Ruby)
 /opt/csw/bin/pkgutil -y -i CSWwget CSWgtar CSWgsed CSWvim
+/opt/csw/bin/pkgutil -y -i CSWrsync
 
 # Add 'vagrant' to sudoers as well
 test -f /etc/sudoers && grep -v "vagrant" "/etc/sudoers" 1>/dev/null 2>&1 && echo "vagrant ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -67,13 +68,13 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 
 # ## Installing the virtualbox guest additions (from the ISO)
 # #
-# VBOX_VERSION=`cat $HOME/.vbox_version`
-# cd /tmp
-# mkdir vboxguestmnt
-# mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
-# cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
-# /usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
-# yes|/usr/sbin/pkgadd -d . SUNWvboxguest
+VBOX_VERSION=`cat $HOME/.vbox_version`
+cd /tmp
+mkdir vboxguestmnt
+mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
+cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
+/usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
+yes|/usr/sbin/pkgadd -d . SUNWvboxguest
 
 # umount /tmp/vboxguestmnt
 # lofiadm -d /dev/lofi/1

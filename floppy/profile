@@ -37,6 +37,52 @@ package      SUNWpoolr add
 package      SUNWtoo add
 package      SUNWxwfnt add
 
+# X11
+package      SUNwxorg-client add
+package      SUNWxorg-cfg add
+package      SUNWxorg-client-programs add
+package      SUNWxorg-clientlibs add
+package      SUNWxorg-compatlinks add
+package      SUNWxorg-graphics-ddx add
+package      SUNWxorg-headers add
+package      SUNWxorg-mesa
+package      SUNWxorg-server add
+package      SUNWxorg-tsol-module add
+package      SUNWxorg-kbd add
+package      SUNWxwdv add
+package      SUNWxwdxm add
+package      SUNWxwfnt add
+package      SUNWxwfs add
+package      SUNWxwhl add
+package      SUNWxwice add
+package      SUNWxwinc add
+package      SUNWxwmod add
+package      SUNWxwplr add
+package      SUNWxwpls add
+package      SUNWxwplt add
+package      SUNWxwrtl add
+package      SUNWxwscf add
+package      SUNWxwssu add
+package      SUNWxwts  add
+package      SUNWxwxft add
+package      SUNWxwxst add
+
+package      SUNWTcl   add
+package      SUNWTk    add
+
+# Java (for sunstudio installer)
+
+package      SUNWj6cfg add
+package      SUNWj6dev add
+package      SUNWj6dvx add
+package      SUNWj6rt  add
+package      SUNWj6rtx add
+
+# For convenience
+
+package      SUNWless  add
+
+
 # For GCC (partially from https://wiki.chipp.ch/twiki/bin/view/CmsTier3/InstallationSolaris)
 package      SUNWarc add
 package      SUNWsfwhea add
