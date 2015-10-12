@@ -67,16 +67,16 @@ echo "LookupClientHostnames=no" >> /etc/ssh/sshd_config
 
 # ## Installing the virtualbox guest additions (from the ISO)
 # #
-# VBOX_VERSION=`cat $HOME/.vbox_version`
-# cd /tmp
-# mkdir vboxguestmnt
-# mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
-# cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
-# /usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
-# yes|/usr/sbin/pkgadd -d . SUNWvboxguest
+VBOX_VERSION=`cat $HOME/.vbox_version`
+cd /tmp
+mkdir vboxguestmnt
+mount -F hsfs -o ro `lofiadm -a $HOME/VBoxGuestAdditions_${VBOX_VERSION}.iso` /tmp/vboxguestmnt
+cp /tmp/vboxguestmnt/VBoxSolarisAdditions.pkg /tmp/.
+/usr/bin/pkgtrans VBoxSolarisAdditions.pkg . all
+yes|/usr/sbin/pkgadd -d . SUNWvboxguest
 
-# umount /tmp/vboxguestmnt
-# lofiadm -d /dev/lofi/1
+#umount /tmp/vboxguestmnt
+#lofiadm -d /dev/lofi/1
 
 if [ $PACKER_BUILDER_TYPE = 'virtualbox-iso' ]; then
   echo "Installing VirtualBox Guest Additions"

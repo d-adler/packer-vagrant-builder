@@ -10,7 +10,6 @@
       "type": "shell",
       "scripts": [
         "scripts/solaris/postinstall.sh",
-        "scripts/solaris/puppet.sh",
         "scripts/solaris/update-terminfo.sh",
         "scripts/solaris/cleanup.sh"
       ]
@@ -19,6 +18,7 @@
   "post-processors": [{
     "compression_level": 9,
     "output": "build/{{user `vm_name`}}-x86_64.box",
+    "vagrantfile_template": "vagrantfiles/solaris10",
     "type": "vagrant",
     "only": ["virtualbox-iso"]
   },
