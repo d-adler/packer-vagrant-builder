@@ -29,6 +29,40 @@
   }],
   "builders": [
     {
+      "type": "qemu",
+      "boot_command": [
+        "e<wait>",
+        "e<wait>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><wait>",
+        "- nowin install -B install_media=cdrom<enter><wait>",
+        "b<wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": "{{user `harddisk_size`}}",
+      "floppy_files": [
+        "floppy/sysidcfg",
+        "floppy/rules",
+        "floppy/rules.ok",
+        "floppy/begin",
+        "floppy/profile",
+        "floppy/finish"
+      ],
+      "guest_os_type": "Solaris_64",
+      "iso_checksum": "c27e5fe2531826192f110e2d9f1f5d73015edac6",
+      "iso_checksum_type": "sha1",
+      "iso_url": "{{user `iso_location`}}/sol-10-u11-ga-x86-dvd.iso",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo '/usr/sbin/poweroff' > shutdown.sh; pfexec bash -l shutdown.sh",
+      "output_directory": "packer-solaris10-qemu",
+      "vm_name": "packer-solaris-10",
+      "qemuargs": [
+        [ "-m", "1536" ]
+      ]
+    },
+    {
       "type": "virtualbox-iso",
       "boot_command": [
         "e<wait>",
