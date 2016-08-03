@@ -35,16 +35,16 @@ yes|/usr/sbin/pkgadd -d http://mirror.opencsw.org/opencsw/pkgutil-`uname -p`.pkg
 # /opt/csw/bin/pkgutil -y -i CSWrubyaugeas
 
 # /opt/csw/bin/gem install puppet -v 3.8.1 --no-ri --no-rdoc
-/opt/csw/bin/pkgutil -y -i CSWpuppet3
+# /opt/csw/bin/pkgutil -y -i CSWpuppet3
 
-mkdir -p /etc/puppet
-mkdir -p /etc/puppet/modules
+# mkdir -p /etc/puppet
+# mkdir -p /etc/puppet/modules
 
-mkdir -p /opt/puppet/var
-mkdir -p /opt/puppet/log
-mkdir -p /opt/puppet/run
-mkdir -p /opt/puppet/share/modules
-mkdir -p /var/lib
+# mkdir -p /opt/puppet/var
+# mkdir -p /opt/puppet/log
+# mkdir -p /opt/puppet/run
+# mkdir -p /opt/puppet/share/modules
+m# kdir -p /var/lib
 
 
 # setup the vagrant key
