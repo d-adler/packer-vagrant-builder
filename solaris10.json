@@ -30,6 +30,7 @@
   "builders": [
     {
       "type": "qemu",
+      "format": "qcow2",
       "boot_command": [
         "e<wait>",
         "e<wait>",
@@ -47,7 +48,6 @@
         "floppy/profile",
         "floppy/finish"
       ],
-      "guest_os_type": "Solaris_64",
       "iso_checksum": "c27e5fe2531826192f110e2d9f1f5d73015edac6",
       "iso_checksum_type": "sha1",
       "iso_url": "{{user `iso_location`}}/sol-10-u11-ga-x86-dvd.iso",
@@ -59,11 +59,17 @@
       "output_directory": "packer-solaris10-qemu",
       "vm_name": "packer-solaris-10",
       "qemuargs": [
-        [ "-m", "1536" ]
+        [ "-m", "1536" ],
+        [ "-cpu", "coreduo" ],
+        [ "-netdev", "user,hostfwd=tcp::{{ .SSHHostPort}}-:22,id=user.0" ],
+        [ "-device", "e1000,netdev=user.0" ]
       ]
     },
     {
       "type": "virtualbox-iso",
+      "foo": [
+         [ "-netdev", "user,id=mynet0" ]
+      ],
       "boot_command": [
         "e<wait>",
         "e<wait>",
