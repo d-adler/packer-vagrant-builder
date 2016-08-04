@@ -60,9 +60,8 @@
       "vm_name": "packer-solaris-10",
       "qemuargs": [
         [ "-m", "1536" ],
-        [ "-cpu", "coreduo" ],
-        [ "-netdev", "user,hostfwd=tcp::{{ .SSHHostPort}}-:22,id=user.0" ],
-        [ "-device", "e1000,netdev=user.0" ]
+        [ "-cpu", "SandyBridge,-x2apic" ],
+        [ "-device", "rtl8139,netdev=user.0" ]
       ]
     },
     {

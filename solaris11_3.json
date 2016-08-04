@@ -1,12 +1,13 @@
 {
   "variables": {
     "iso_location": "/Users/edwin/Downloads",
-    "harddisk_size": "80960",
+    "harddisk_size": "20000",
     "vm_name": "solaris11_3"
   },
   "builders": [
     {
       "type": "qemu",
+      "format": "qcow2",
       "boot_command": [
         "27<enter><wait>",
         "3<enter><wait10>",
@@ -63,7 +64,6 @@
       ],
       "boot_wait": "105s",
       "disk_size": "{{user `harddisk_size`}}",
-      "guest_os_type": "Solaris11_64",
       "iso_checksum": "a61f027eb51d997d6daa51712179cb4a",
       "iso_checksum_type": "md5",
       "iso_url": "{{user `iso_location`}}/sol-11_3-text-x86.iso",
@@ -72,12 +72,17 @@
       "ssh_password": "1vagrant",
       "ssh_port": 22,
       "ssh_username": "vagrant",
+      "disk_interface": "ide",
       "qemuargs": [
-        [ "-m", "1536" ]
+        [ "-m", "2048" ],
+        [ "-cpu", "SandyBridge,-x2apic" ],
+        [ "-device", "e1000,netdev=user.0" ]
       ],
       "vm_name": "packer-solaris-11_3"
     },
     {
+      "_comment": [
+      ],
       "type": "virtualbox-iso",
       "boot_command": [
         "27<enter><wait>",
